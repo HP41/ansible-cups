@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  description: Installs CUPS, installs necessary PPDs and installs printers and classes on CUPS
+  min_ansible_version: 2.1
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - jessie
+        - wheezy
+    - name: Ubuntu
+      versions:
+        - xenial
+        - trusty
+        - precise
+
+dependencies: []

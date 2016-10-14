@@ -1,0 +1,8 @@
+---
+- name: Install OpenPrinting Ricoh drivers
+  apt: name=openprinting-ppds-postscript-ricoh state=latest
+
+- name: Extracting PPDs
+  shell: find . -name '*.gz' -exec gzip --decompress --quiet {} \;
+  args:
+    chdir: "{{cups_ricoh_ppd_location}}"

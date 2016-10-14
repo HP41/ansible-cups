@@ -1,0 +1,18 @@
+- block: 
+    - name: Delete {{ cups_tmp_location }}
+      file:
+        path: "{{cups_tmp_location}}"
+        state: absent
+
+      # As grep was used in the initial command whos output is registered as cups_papercut_expect_pkgs_already_installed. 
+      # The results dict will contain the results if the package already existed or not. If there output is none or the 
+      # command failed to find "Install ok installed" then it means the package wasn't installed beforehand and therfore 
+      # can be uninstalled after the precessing of this script.
+    - name: Uninstall the expect pacakges if installed before
+      apt: name={{ item.0 }} state=absent
+      when: (item.1|failed) or (item.1.stdout == "")
+      with_together:
+        - "{{cups_expect_pkgs}}"
+        - "{{cups_expect_pkgs_already_installed.results}}"
+  
+  ignore_errors: True

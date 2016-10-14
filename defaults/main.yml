@@ -1,0 +1,77 @@
+---
+cups_lpadmin_users:
+  - root
+cups_lpd: True
+cups_lpd_usn: cupslpd
+
+cups_sysadmins_email: "sysadmins@{{ansible_fqdn}}"
+
+cups_browsed_browse_remote_protocols: "none"
+cups_browsed_browse_local_protocols: "none"
+cups_browsed_browse_protocols: "none"
+cups_browsed_create_ipp_print_queues: "No"
+
+cups_cupsd_admin_subnet: "all"
+cups_cupsd_preserve_job_history: "No"
+cups_cupsd_preserve_job_files: "No"
+cups_cupsd_auto_purge_jobs: "Yes"
+cups_cupsd_require_user_to_be_part_of_to_access_admin_pages: "@SYSTEM"
+
+cups_snmp_community_name: "public"
+
+cups_hplip: True
+cups_ricoh_openprinting_ppds: True
+cups_openprinting_apt_required: "{{ (cups_ricoh_openprinting_ppds is defined) | ternary (True, False) }}"
+
+cups_openprinting_apt_key_id: 24CBF5474CFD1E2F
+cups_openprinting_key_server: keyserver.ubuntu.com
+cups_openprinting_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+
+cups__debops_ferm_dependent_rules:
+  - name: 'cups_ipp_lpr_directip'
+    chain: 'INPUT'
+    type: 'accept'
+    protocol: 'tcp'
+    dport: ['631', '515', '9100']
+    accept_any: True
+
+cups_printer_uri_prefix:
+cups_printer_report_ipp_supplies: True
+cups_printer_report_snmp_supplies: True
+cups_printer_is_shared: True
+cups_purge_all_printers_and_classes: False
+cups_class_is_shared: True
+
+cups_printers_and_classes_to_be_removed: []
+#  - TEST
+#  - Xerox
+
+cups_printer_list: []
+#  - name_on_print_server: "TestPrinter1"
+#    printer_or_class: "printer"
+#    state_on_print_server: "present"
+#    uri: "file:///dev/null"
+#  - name_on_print_server: "TestPrinter2"
+#    printer_or_class: "printer"
+#    state_on_print_server: "present"
+#    uri: "file:///dev/null"
+
+cups_class_list: []
+#  - name_on_print_server: "TestClass"
+#    state_on_print_server: "present"
+#    class_members:
+#      - "TestPrinter1"
+#      - "TestPrinter2"
+
+
+##################################################
+############# CONFIGURABLE VARIABLES #############
+##################################################
+
+#cups_browsed_ips_or_subnets_to_search_for_printers: []
+#cups_browsed_print_servers_to_poll: []
+#cups_cupsd_limit_request_body: ''
+#cups_cupsd_require_user_to_be_part_of_to_access_admin_pages: ''
+#cups_cupsd_extra_policies: ''
+#cups_ppd_files_to_be_copied: ""
+#cups_snmp_locations_to_scan: []

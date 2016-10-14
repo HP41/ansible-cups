@@ -1,0 +1,20 @@
+---
+- block:
+    - name: Include - Pre-Install steps
+      include: cups_pre_install.yml
+
+    - name: Include - Install CUPS
+      include: cups_install.yml
+
+    - name: Include - Configure CUPS
+      include: cups_configure.yml
+
+    - name: Include - Install PPDs.
+      include: ppd_install.yml
+
+    - name: Include - Uninstall any defined printers and install any printers and classes defined.
+      include: printer_install.yml
+
+  always:
+    - name: Include - CUPS Cleanup
+      include: cups_cleanup.yml

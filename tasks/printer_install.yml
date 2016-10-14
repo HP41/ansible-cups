@@ -1,0 +1,41 @@
+---
+- name: Removing all printers and classes defined in cups_printers_printers_and_classes_to_be_removed.
+  cups_lpadmin:
+    name: "{{item}}"
+    state: "absent"
+  with_items:
+    - "{{cups_printers_and_classes_to_be_removed}}"
+
+- name: Removing all printers and classes on server.
+  cups_lpadmin:
+    purge: True
+  when: cups_purge_all_printers_and_classes
+
+- name: Install printers using cups_lpadmin
+  cups_lpadmin:
+    name: "{{item.name_on_print_server}}"
+    printer_or_class: "printer"
+    state: "{{item.state_on_print_server}}"
+    uri: "{{cups_printer_uri_prefix}}{{item.cups_uri}}"
+    model: "{{item.driver}}"
+    location: "{{item.location_on_print_server}}"
+    info: "{{item.info_on_print_server}}"
+    report_ipp_supply_levels: "{{item.report_ipp_supply_levels|default(cups_printer_report_ipp_supplies)}}"
+    report_snmp_supply_levels: "{{item.report_snmp_supply_levels|default(cups_printer_report_snmp_supplies)}}"
+    shared: "{{item.shared|default(cups_printer_is_shared)}}"
+  when: cups_printer_list is defined
+  with_items:
+    - "{{cups_printer_list}}"
+
+- name: Create printer classes and assign printers to them
+  cups_lpadmin:
+    name: "{{item.name}}"
+    printer_or_class: "class"
+    state: "{{item.state_on_print_server}}"
+    location: "{{item.location}}"
+    info: "{{item.info}}"
+    shared: "{{item.shared|default(cups_class_is_shared)}}"
+    class_members: "{{item.members}}"
+  when: cups_class_list is defined
+  with_items:
+    - "{{cups_class_list}}"

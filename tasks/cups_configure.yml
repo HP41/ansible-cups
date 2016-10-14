@@ -1,0 +1,42 @@
+---
+- name: Shutdown cups service(s)
+  service: 
+    name: "{{item}}"
+    state: stopped
+  with_items:
+    - "{{cups_services}}"
+
+- name: Copying over cupsd.conf using cupsd.conf.j2 template
+  template:
+    src: "cupsd.conf.j2"
+    dest: "{{cups_etc_location}}/cupsd.conf"
+    owner: "{{cups_etc_files_perms_owner}}"
+    group: "{{cups_etc_files_perms_grp}}"
+    mode: "{{cups_etc_files_mode}}"
+
+- name: Copying over cups-browsed.conf using cups-browsed.conf.j2 template
+  template:
+    src: "cups-browsed.conf.j2"
+    dest: "{{cups_etc_location}}/cups-browsed.conf"
+    owner: "{{cups_etc_files_perms_owner}}"
+    group: "{{cups_etc_files_perms_grp}}"
+    mode: "{{cups_etc_files_mode}}"
+
+- name: Copying over snmp.conf using snmp.conf.j2 template
+  template:
+    src: "snmp.conf.j2"
+    dest: "{{cups_etc_location}}/snmp.conf"
+    owner: "{{cups_etc_files_perms_owner}}"
+    group: "{{cups_etc_files_perms_grp}}"
+    mode: "{{cups_etc_files_mode}}"
+
+- name: Include - Copy SSL certificates if necessary variables are defined - cups_source_ssl_private_key_location AND cups_source_ssl_public_key_location.
+  include: cups_install_ssl_cert.yml
+  when: (cups_source_ssl_private_key_location is defined) and (cups_source_ssl_public_key_location is defined)
+
+- name: Start back up cups service(s)
+  service: 
+    name: "{{item}}"
+    state: started
+  with_items:
+    - "{{cups_services}}"
