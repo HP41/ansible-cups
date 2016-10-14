@@ -1,5 +1,5 @@
-=---
-cups_etc_location: /etc/cups/
+---
+cups_etc_location: "/etc/cups/"
 cups_etc_files_perms_owner: "root"
 cups_etc_files_perms_grp: "lp"
 cups_etc_files_mode: 0644
