@@ -29,11 +29,11 @@
 
 - name: Create printer classes and assign printers to them
   cups_lpadmin:
-    name: "{{item.name}}"
+    name: "{{item.name_on_print_server}}"
     printer_or_class: "class"
     state: "{{item.state_on_print_server}}"
-    location: "{{item.location}}"
-    info: "{{item.info}}"
+    location: "{{item.location_on_print_server}}"
+    info: "{{item.info_on_print_server}}"
     shared: "{{item.shared|default(cups_class_is_shared)}}"
     class_members: "{{item.members}}"
   when: cups_class_list is defined
