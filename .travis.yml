@@ -6,7 +6,8 @@ env:
   - SITE=test-simple-playbook.yml
 
 before_install:
-  - sudo apt-get update -qq
+  - sudo apt-get -y -qq update
+  - sudo apt-get -y -qq install aptitude
 
 install:
   # Install Ansible.
@@ -20,7 +21,11 @@ script:
   - "ansible-playbook -i tests/inventory tests/$SITE --syntax-check"
 
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo"
+  - >
+    ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo
+    | grep -q 'failed=0'
+    && (echo 'Role run: pass' && exit 0)
+    || (echo 'Role run: fail' && exit 1)
 
   # Make sure GitLab is running.
   - >
