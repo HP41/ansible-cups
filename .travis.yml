@@ -12,7 +12,7 @@ before_install:
 
 install:
   # Install Ansible. The other packages are to allow SNI veriification of SSL certs.
-  - pip install ansible urllib3 pyopenssl ndg-httpsclient pyasn1
+  - yes | pip install ansible urllib3 pyopenssl ndg-httpsclient pyasn1
 
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
