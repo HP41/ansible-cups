@@ -13,13 +13,13 @@
 
 - name: Install printers using cups_lpadmin
   cups_lpadmin:
-    name: "{{item.name_on_print_server}}"
+    name: "{{item.name}}"
     printer_or_class: "printer"
-    state: "{{item.state_on_print_server}}"
-    uri: "{{cups_printer_uri_prefix}}{{item.cups_uri}}"
+    state: "{{item.state|default(omit)}}"
+    uri: "{{cups_printer_uri_prefix}}{{item.uri}}"
     model: "{{item.driver|default(omit)}}"
-    location: "{{item.location_on_print_server|default(omit)}}"
-    info: "{{item.info_on_print_server|default(omit)}}"
+    location: "{{item.location|default(omit)}}"
+    info: "{{item.info|default(omit)}}"
     report_ipp_supply_levels: "{{item.report_ipp_supply_levels|default(cups_printer_report_ipp_supplies)}}"
     report_snmp_supply_levels: "{{item.report_snmp_supply_levels|default(cups_printer_report_snmp_supplies)}}"
     shared: "{{item.shared|default(cups_printer_is_shared)}}"
@@ -29,9 +29,9 @@
 
 - name: Create printer classes and assign printers to them
   cups_lpadmin:
-    name: "{{item.name_on_print_server}}"
+    name: "{{item.name}}"
     printer_or_class: "class"
-    state: "{{item.state_on_print_server}}"
+    state: "{{item.state|default(omit)}}"
     location: "{{item.location_on_print_server|default(omit)}}"
     info: "{{item.info_on_print_server|default(omit)}}"
     shared: "{{item.shared|default(cups_class_is_shared)}}"

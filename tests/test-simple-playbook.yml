@@ -7,17 +7,14 @@
       - Xerox
 
     cups_printer_list:
-      - name_on_print_server: "TestPrinter1"
-        state_on_print_server: "present"
-        cups_uri: "file:///dev/null"
-      - name_on_print_server: "TestPrinter2"
-        state_on_print_server: "present"
-        cups_uri: "file:///dev/null"
+      - name: "TestPrinter1"
+        uri: "file:///dev/null"
+      - name: "TestPrinter2"
+        uri: "file:///dev/null"
 
     cups_class_list:
-      - name_on_print_server: "TestClass"
-        state_on_print_server: "present"
-        class_members:
+      - name: "TestClass"
+        members:
           - "TestPrinter1"
           - "TestPrinter2"
 
