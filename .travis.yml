@@ -7,7 +7,6 @@ env:
 
 before_install:
   - sudo apt-get -y -qq update
-  - sudo apt-get -y -qq upgrade
   - sudo apt-get -y -qq install aptitude
 
 install:
