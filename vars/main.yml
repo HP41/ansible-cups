@@ -15,7 +15,6 @@ cups_expect_pkgs:
 
 cups_services:
   - cups
-  - cups-browsed
 
 cups_packages_to_install:
   - cups
