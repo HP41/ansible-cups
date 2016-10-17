@@ -24,7 +24,7 @@ script:
   - script -q -c "ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo" output.txt
 
   - >
-    grep output.txt -q 'failed=0' 
+    grep -q 'failed=0' output.txt
     && (echo 'Role run: pass' && exit 0) 
     || (echo 'Role run: fail' && exit 1)
 
