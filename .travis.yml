@@ -28,7 +28,7 @@ script:
     && (echo 'Role run: pass' && exit 0) 
     || (echo 'Role run: fail' && exit 1)
 
-  # Make sure GitLab is running.
+  # Make sure CUPS is running.
   - >
     curl --insecure -s -o /dev/null -w "%{http_code}" http://localhost:631
     | grep -q '200'
