@@ -42,26 +42,24 @@ cups_printer_is_shared: True
 cups_purge_all_printers_and_classes: False
 cups_class_is_shared: True
 
-cups_printers_and_classes_to_be_removed:
-  - TEST
-  - Xerox
+cups_printers_and_classes_to_be_removed: []
+  # - TEST
+  # - Xerox
 
-cups_printer_list:
-  - name_on_print_server: "TestPrinter1"
-    printer_or_class: "printer"
-    state_on_print_server: "present"
-    uri: "file:///dev/null"
-  - name_on_print_server: "TestPrinter2"
-    printer_or_class: "printer"
-    state_on_print_server: "present"
-    uri: "file:///dev/null"
+cups_printer_list: []
+  # - name_on_print_server: "TestPrinter1"
+  #   state_on_print_server: "present"
+  #   uri: "file:///dev/null"
+  # - name_on_print_server: "TestPrinter2"
+  #   state_on_print_server: "present"
+  #   uri: "file:///dev/null"
 
-cups_class_list: 
-  - name_on_print_server: "TestClass"
-    state_on_print_server: "present"
-    class_members:
-      - "TestPrinter1"
-      - "TestPrinter2"
+cups_class_list: []
+  # - name_on_print_server: "TestClass"
+  #   state_on_print_server: "present"
+  #   class_members:
+  #     - "TestPrinter1"
+  #     - "TestPrinter2"
 
 
 ##################################################
