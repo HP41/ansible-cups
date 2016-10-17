@@ -1,4 +1,6 @@
-# cups
+# Ansible Role: cups
+
+[![Build Status](https://travis-ci.org/HP41/ansible-cups.svg?branch=master)](https://travis-ci.org/HP41/ansible-cups)
 
 ## Installs CUPS, installs necessary PPDs and installs printers and classes on CUPS
 ### Install and configure CUPS
