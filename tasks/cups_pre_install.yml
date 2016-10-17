@@ -1,9 +1,4 @@
 ---
-- name: Update apt cache and safe ugprade pacakges.
-  apt:
-    update_cache: yes
-    upgrade: safe
-
 - name: Creating CUPS tmp location exists {{ cups_tmp_location }} exists
   file:
     path: "{{cups_tmp_location}}"
@@ -29,10 +24,10 @@
         update_cache: yes
   when: cups_openprinting_apt_required
 
-- name: Update apt cache and safe ugprade pacakges.
+- name: Update apt cache.
   apt:
     update_cache: yes
-    upgrade: safe
+    # upgrade: safe
 
 # If the output is none or the command failed to find "install ok installed" then it means the package wasn't installed beforehand
 - name: Check and register if expect related packages are already installed.
