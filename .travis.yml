@@ -10,8 +10,8 @@ before_install:
   - sudo apt-get -y -qq install aptitude
 
 install:
-  # Install Ansible. The other packages are to allow SNI veriification of SSL certs.
-  - yes | pip install ansible urllib3 pyopenssl ndg-httpsclient pyasn1
+  # Install Ansible.
+  - yes | pip install ansible
 
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
