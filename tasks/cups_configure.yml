@@ -6,33 +6,36 @@
   with_items:
     - "{{cups_services}}"
 
-- name: Copying over cupsd.conf using cupsd.conf.j2 template
+- name: Copying over cupsd.conf using template if defined to {{cups_etc_location}}/cupsd.conf.
   template:
-    src: "cupsd.conf.j2"
+    src: "{{cups_cupsd_conf_template}}"
     dest: "{{cups_etc_location}}/cupsd.conf"
     owner: "{{cups_etc_files_perms_owner}}"
     group: "{{cups_etc_files_perms_grp}}"
     mode: "{{cups_etc_files_mode}}"
+  when: cups_cupsd_conf_template|default("") != ""
 
-- name: Copying over cups-browsed.conf using cups-browsed.conf.j2 template
+- name: Copying over cups-browsed.conf using template if defined to {{cups_etc_location}}/cups-browsed.conf.
   template:
-    src: "cups-browsed.conf.j2"
+    src: "{{cups_cups_browsed_conf_template}}"
     dest: "{{cups_etc_location}}/cups-browsed.conf"
     owner: "{{cups_etc_files_perms_owner}}"
     group: "{{cups_etc_files_perms_grp}}"
     mode: "{{cups_etc_files_mode}}"
+  when: cups_cups_browsed_conf_template|default("") != ""
 
-- name: Copying over snmp.conf using snmp.conf.j2 template
+- name: Copying over snmp.conf using template if defined to {{cups_etc_location}}/snmp.conf.
   template:
-    src: "snmp.conf.j2"
+    src: "{{cups_snmp_conf_template}}"
     dest: "{{cups_etc_location}}/snmp.conf"
     owner: "{{cups_etc_files_perms_owner}}"
     group: "{{cups_etc_files_perms_grp}}"
     mode: "{{cups_etc_files_mode}}"
+  when: cups_snmp_conf_template|default("") != ""
 
 - name: Include - Copy SSL certificates if necessary variables are defined - cups_source_ssl_private_key_location AND cups_source_ssl_public_key_location.
   include: cups_install_ssl_cert.yml
-  when: (cups_source_ssl_private_key_location is defined) and (cups_source_ssl_public_key_location is defined)
+  when: (cups_source_ssl_private_key_location|default("") != "") and (cups_source_ssl_public_key_location|default("") != "")
 
 - name: Start back up cups service(s)
   service: 

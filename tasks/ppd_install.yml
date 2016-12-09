@@ -14,4 +14,4 @@
     owner: root
     group: root
     mode: 0644
-  when: cups_ppd_files_to_be_copied is defined
+  when: cups_ppd_files_to_be_copied|default("") != ""

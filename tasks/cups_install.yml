@@ -9,8 +9,8 @@
     name: "{{item}}"
     append: yes
     groups: "{{cups_admin_grp}}"
-  with_items: "{{cups_lpadmin_users}}"
-  when: cups_lpadmin_users is defined
+  with_items: 
+    - "{{cups_lpadmin_users}}"
 
 - name: Include - CUPS-LPD
   include: cups_install_lpd.yml

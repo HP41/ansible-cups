@@ -10,8 +10,8 @@
     * Creates a user account which will run the cups-lpd process.
     * Installs `xinetd` to run cups-lpd as a service. Uses the cups-lpd template file to create the final xinetd config.
 * Configuring CUPS: 
-    * Uses the template in the role to build the final config file(s) and paste it in the final location
-    * It builds the following files: cupsd.conf, cups-browsed.conf and snmp.conf in /etc/cups/
+    * If templates for cupsd.conf, cups-browsed.conf and snmp.conf are provided they'll be built and copied over 
+    * If SSL certs are provided it'll copy them over to the proper location.
 
 ### Install PPDs
 * Creates `/opt/share/ppd` where CUPS looks for PPDs that are manually copied over.
@@ -24,7 +24,8 @@
 
 ### Install Printers
 * Any printers defined to be removed will be removed first.
-* Install Printers listed in the `cups_printer_list` variable and then installs classes listed in the `cups_class_list` 
+* Install Printers listed in the `cups_printer_list` variable and then installs classes listed in the `cups_class_list`
+    * See [cups_printer_list and cups_class_list](tasks/printer_install.yml) to see how to define each printer and class object in the variable `cups_printer_list` and `cups_class_list` respectively.
     * This uses the [cups_lpadmin](library/cups_lpadmin.py) module. There's documentation/comments within it on how it can be used.
     * cups\_lpadmin is a direct copy from [HP41.ansible-modules-extra](https://github.com/HP41/ansible-modules-extras)/system/cups\_lpadmin. Once it's merged upstream, it'll be removed from here. 
     
@@ -49,26 +50,13 @@
 * `cups_lpd`: Whether to install and setup cups-lpd - Default=`True`
 * `cups_sysadmins_email`: The email that'll be used to build the cupsd.conf template - Default=`sysadmins@ansible_fqdn`
 * `cups__debops_ferm_dependent_rules`: Default simple rules to open up ports (515, 631, 9100) through firewall that can be referenced when using [debops.ferm](https://github.com/debops/ansible-ferm) role.
-* /etc/cups/cups-browsed.conf [Official Documentation](https://www.cups.org/documentation.html):
-    * `cups_browsed_browse_remote_protocols`: Sets the value for `BrowseRemoteProtocols`- Default=`none`
-    * `cups_browsed_browse_local_protocols`: Sets the value for `BrowseLocalProtocols` - Default=`none`
-    * `cups_browsed_browse_protocols`: Sets the value for `BrowseProtocols` - Default=`none`
-    * `cups_browsed_create_ipp_print_queues`: Sets the value for `CreateIPPPrinterQueues` - Default=`No`
-    * `cups_browsed_print_servers_to_poll`: A **list** of IPs/DNS Names that defines what CUPS servers to poll to add their printers - `BrowsePoll` - Default=`None`
-    * `cups_browsed_ips_or_subnets_to_search_for_printers`: A **list** of IPs/DNS Names that defines what servers (any type) to browse and add its printers - `BrowseAllow` - Default=`None` 
-* /etc/cups/cupsd.conf [Official Documentation](https://www.cups.org/doc/man-cupsd.conf.html):
-    * `cups_cupsd_admin_subnet`: The subnet which CUPS admin pages are limited to - Default=`all`
-    * `cups_cupsd_preserve_job_history`: Preserve Job history in CUPS? - Default=`No`
-    * `cups_cupsd_preserve_job_files`: Preserve Job Files in CUPS? - Default=`No`
-    * `cups_cupsd_auto_purge_jobs`: Purge jobs right after they're completed? - Default=`Yes`
-    * `cups_cupsd_require_user_to_be_part_of_to_access_admin_pages`: What local security group to be aprt of to be considered a CUPS admin and therefore gain access to the admin pages - Default=`@SYSTEM`
-    * `cups_cupsd_limit_request_body`: Maximum size limit for print jobs coming in - Default=None
-    * `cups_cupsd_conf_extra_policies`: Any extra CUPS policies to add to cupsd.conf. Please note this is treated as a string, therefore please ensure to maintain new line indentations using `|` when defining this variable.
-* /etc/cups/snmp.conf [Official Documentation](https://www.cups.org/doc/man-cups-snmp.conf.html):
-    * `cups_snmp_community_name`: The default community name with which it can search for printers - Default=`public`
-    * `cups_snmp_locations_to_scan`: The IPs to scan.
 * /etc/xinetd.d/cups-lpd    
-    * `cups_lpd_usn`: The username with which it'll run the cups-lpd process (through xinetd) - Default=`snmp.conf`
+    * `cups_lpd_usn`: The username with which it'll run the cups-lpd process (through xinetd) - Default=`cupslpd`
+* Optional templates:
+    * They could've been setup as a simple file copy but accessing and adding ansible variables into it will not be possible. With this ansible\_managed, ansible\_fqdn, etc are accessible. The templates could also be simple text files with no variable declaration and it'll get copied over.
+    * `cups_cupsd_conf_template`: For /etc/cups/cupsd.conf
+    * `cups_cups_browsed_conf_template`: For /etc/cups/cups-browsed.conf
+    * `cups_snmp_conf_template`: For /etc/cups/snmp.conf
 
 ### Installation and copying of PPDs:
 * `cups_ppd_files_to_be_copied`: The folder to copy all .ppd files from - Default=None
@@ -86,7 +74,21 @@
 * `cups_printer_report_snmp_supplies`: When printer object has no `report_snmp_supply_levels` attribute this value is used. - Default=`True`
 * `cups_printer_is_shared`: When printer object has no `shared` attribute this value is used - Default=`True`
 * `cups_class_is_shared`: When the class object has no `shared` attribute this value is used - Default=`True`
-* `cups_printer_list`: A **list** of hashes that contain printer information needed to install them. Please check [cups_lpadmin](library/cups_lpadmin.py) module on how to use it. 
-* `cups_class_list`: A **list** of hashes that contain class information needed to install them. Please check [cups_lpadmin](library/cups_lpadmin.py) module on how to use it.
+* `cups_printer_list`: A **list** of hashes that contain printer information needed to install them. Please check [cups_lpadmin](library/cups_lpadmin.py) module and how [cups_printer_list](tasks/printer_install.yml) variable is used.
+* `cups_class_list`: A **list** of hashes that contain class information needed to install them. Please check [cups_lpadmin](library/cups_lpadmin.py) module and how [cups_class_list](tasks/printer_install.yml) variable is used.
 * `cups_purge_all_printers_and_classes`: Should the cups_lpadmin module purge/delete all printers before continuing.
 * `cups_printers_and_classes_to_be_removed`: Printers and classes you would like to specifically remove.
+
+### Variables related to operation of the role and general CUPS setup:
+* `cups_packages_to_install`: The CUPS packages to install. This can be overridden for a specific package version if needed - Default=`cups, cups-pdf`
+* `cups_xinetd_location`: The location of xinet.d files - Default=`/etc/xinetd.d`
+* `cups_tmp_location`: Temp location that this role uses for copying files and running scripts. Location is created if it doesn't exist - Default=`/tmp/cups-ansible`
+* `cups_admin_grp`: The group that has admin access to CUPS. This is referenced when adding users (if defined) to CUPS admin roles - Default=`lpadmin`
+* `cups_services`: The CUPS service(s) that is referenced when starting and stopping CUPS service(s) for configuration purposes - Default=`cups`
+* `cups_etc_location`: etc location of CUPS config - Default=`/etc/cups`
+* `cups_etc_files_perms_owner`: Owner of files placed by this role under `cups_etc_location` - Default=`root`
+* `cups_etc_files_perms_grp`: Group membership of files placed by this role under `cups_etc_location` - Default=`lp`
+* `cups_etc_files_mode`: File mode of files placed by this role under `cups_etc_location` - Default=`0644`
+* `cups_expect_pkgs`: The expect related packages that are installed for unattended installations of different expect scripts within this role - Default=`expect, python-pexpect`
+* `cups_ppd_shared_location`: The standard shared location where PPDs can be placed and CUPS will pick them up - Default=`/opt/share/ppd`
+* `cups_ricoh_ppd_location`: The location where Ricoh PPDs from OpenPrinting are installed - Default=`/opt/OpenPrinting-Ricoh/ppds/Ricoh`

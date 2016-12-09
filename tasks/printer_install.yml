@@ -15,15 +15,21 @@
   cups_lpadmin:
     name: "{{item.name}}"
     printer_or_class: "printer"
-    state: "{{item.state|default(omit)}}"
+    state: "{{item.state|default(cups_printer_default_state)}}"
+    enabled: "{{item.enabled|default(cups_printer_default_enabled)}}"
     uri: "{{cups_printer_uri_prefix}}{{item.uri}}"
+    default: "{{item.default_printer|default(omit)}}"
     model: "{{item.driver|default(omit)}}"
     location: "{{item.location|default(omit)}}"
     info: "{{item.info|default(omit)}}"
-    report_ipp_supply_levels: "{{item.report_ipp_supply_levels|default(cups_printer_report_ipp_supplies)}}"
-    report_snmp_supply_levels: "{{item.report_snmp_supply_levels|default(cups_printer_report_snmp_supplies)}}"
-    shared: "{{item.shared|default(cups_printer_is_shared)}}"
-  when: cups_printer_list is defined
+    report_ipp_supply_levels: "{{item.report_ipp_supply_levels|default(cups_printer_default_report_ipp_supplies)}}"
+    report_snmp_supply_levels: "{{item.report_snmp_supply_levels|default(cups_printer_default_report_snmp_supplies)}}"
+    shared: "{{item.shared|default(cups_printer_default_is_shared)}}"
+    assign_cups_policy: "{{item.assign_cups_policy|default(cups_printer_default_assign_cups_policy)}}"
+    job_kb_limit: "{{item.job_kb_limit|default(omit)}}"
+    job_quota_limit: "{{item.job_quota_limit|default(omit)}}"
+    job_page_limit: "{{item.job_page_limit|default(omit)}}"
+    options: "{{item.options|default(omit)}}"
   with_items:
     - "{{cups_printer_list}}"
 
@@ -31,11 +37,10 @@
   cups_lpadmin:
     name: "{{item.name}}"
     printer_or_class: "class"
-    state: "{{item.state|default(omit)}}"
-    location: "{{item.location_on_print_server|default(omit)}}"
-    info: "{{item.info_on_print_server|default(omit)}}"
-    shared: "{{item.shared|default(cups_class_is_shared)}}"
-    class_members: "{{item.members}}"
-  when: cups_class_list is defined
+    state: "{{item.state|default(cups_class_default_state)}}"
+    location: "{{item.location|default(omit)}}"
+    info: "{{item.info|default(omit)}}"
+    shared: "{{item.shared|default(cups_class_default_is_shared)}}"
+    class_members: "{{item.class_members}}"
   with_items:
     - "{{cups_class_list}}"
