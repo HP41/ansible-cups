@@ -1,5 +1,5 @@
 ---
-- name: Creating CUPS tmp location exists {{ cups_tmp_location }} exists
+- name: Creating CUPS tmp location {{ cups_tmp_location }}
   file:
     path: "{{cups_tmp_location}}"
     recurse: yes

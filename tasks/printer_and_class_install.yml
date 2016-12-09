@@ -41,6 +41,6 @@
     location: "{{item.location|default(omit)}}"
     info: "{{item.info|default(omit)}}"
     shared: "{{item.shared|default(cups_class_default_is_shared)}}"
-    class_members: "{{item.class_members}}"
+    class_members: "{{item.members}}"
   with_items:
     - "{{cups_class_list}}"
