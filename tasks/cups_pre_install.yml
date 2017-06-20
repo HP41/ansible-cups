@@ -22,7 +22,7 @@
         repo: "{{cups_openprinting_repo}}"
         state: present
         update_cache: yes
-  when: cups_openprinting_apt_required
+  when: cups_openprinting_apt_required is defined and cups_openprinting_apt_required == True
 
 - name: Update apt cache.
   apt:
