@@ -1,8 +1,24 @@
 ---
 - name: Install CUPS
-  apt: name={{ item }} state=latest
+  package: 
+    name: "{{item}}" 
+    state: latest
   with_items:
     - "{{cups_packages_to_install}}"
+
+- name: ensure lpadmin group exists 
+  group:
+    name: "{{cups_admin_grp}}"
+    state: present
+
+- name: ensure lpadmin permitions
+  lineinfile:
+    path: "{{item}}"
+    regexp: "^SystemGroup"
+    line: "SystemGroup {{cups_admin_grp}}"
+  with_items:
+    - "/etc/cups/cupsd.conf"
+    - "/etc/cups/cups-files.conf"
 
 - name: Add accounts to lpadmin group (CUPS admin)
   user:

@@ -39,6 +39,8 @@
     - xenial
     - trusty
     - precise
+* Guest machine: CentOS
+    - 7.4
 
 ## Possible additional tasks that are not part of this role's responsibilities.
 * Opening the necessary CUPS ports - 515(LPR), 631(IPP/IPPS), 9100(direct IP) through the firewall.
@@ -65,7 +67,8 @@
 * `cups_openprinting_apt_required`: This is defined as a ternary. It controls if the OpenPrinting APT key and repo is added based on Ricoh drivers are being installed or not. It can be easily overriden to your value.
 * `cups_openprinting_apt_key_id`: The APT key id to obtain from keyserver below. Default=24CBF5474CFD1E2F
 * `cups_openprinting_key_server`: The keyserver to acquire the key from for the below repo - Default=keyserver.ubuntu.com
-* `cups_openprinting_repo`: The OpenPrinting Repo to add - Default="deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+* `cups_openprinting_apt_repo`: The OpenPrinting Repo to add for Debian / Ubuntu - Default="deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+* `cups_openprinting_yum_repo`: The OpenPrinting Repo to add for RedHat / CentOS - Default="http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
 
 
 ### Installation of Printers and classes:
@@ -89,6 +92,6 @@
 * `cups_etc_files_perms_owner`: Owner of files placed by this role under `cups_etc_location` - Default=`root`
 * `cups_etc_files_perms_grp`: Group membership of files placed by this role under `cups_etc_location` - Default=`lp`
 * `cups_etc_files_mode`: File mode of files placed by this role under `cups_etc_location` - Default=`0644`
-* `cups_expect_pkgs`: The expect related packages that are installed for unattended installations of different expect scripts within this role - Default=`expect, python-pexpect`
+* `cups_expect_packages`: The expect related packages that are installed for unattended installations of different expect scripts within this role - Debian-Default=`expect, python-pexpect , RedHat-Default=`expect, pexpect`
 * `cups_ppd_shared_location`: The standard shared location where PPDs can be placed and CUPS will pick them up - Default=`/opt/share/ppd`
 * `cups_ricoh_ppd_location`: The location where Ricoh PPDs from OpenPrinting are installed - Default=`/opt/OpenPrinting-Ricoh/ppds/Ricoh`

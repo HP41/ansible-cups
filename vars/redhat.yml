@@ -1,0 +1,5 @@
+---
+
+cups_expect_packages:
+    - "expect"
+    - "pexpect"
