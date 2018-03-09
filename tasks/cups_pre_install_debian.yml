@@ -19,7 +19,7 @@
 
     - name: Add OpenPrinting Package repo
       apt_repository:
-        repo: "{{cups_openprinting_repo}}"
+        repo: "{{cups_openprinting_apt_repo}}"
         state: present
         update_cache: yes
   when: cups_openprinting_required is defined and cups_openprinting_required == True
