@@ -537,7 +537,7 @@ class CUPSCommand(object):
                 kv = l.split('=', 1)
 
                 # Strip out any excess whitespace from the key/value
-                kv = map(str.strip, kv)
+                kv = tuple(map(str.strip, kv))
 
                 curr[kv[0]] = kv[1]
 
