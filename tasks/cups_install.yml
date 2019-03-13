@@ -1,8 +1,16 @@
 ---
-- name: Install CUPS
-  apt: name={{ item }} state=latest
-  with_items:
-    - "{{cups_packages_to_install}}"
+- name: Apt Packages Install CUPS
+  include: apt_cups_install.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Yum Packages Install CUPS
+  include: yum_cups_install.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Adds lpadmin group
+  group:
+    name: lpadmin
+    state: present
 
 - name: Add accounts to lpadmin group (CUPS admin)
   user:
@@ -14,4 +22,7 @@
 
 - name: Include - CUPS-LPD
   include: cups_install_lpd.yml
-  when: cups_lpd
+  when: 
+    - (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+    - cups_lpd
+...

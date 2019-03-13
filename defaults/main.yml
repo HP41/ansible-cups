@@ -63,9 +63,6 @@ cups_class_list: []
 #      - "TestPrinter1"
 #      - "TestPrinter2"
 
-cups_packages_to_install:
-  - cups
-  - cups-pdf
 cups_xinetd_location: "/etc/xinetd.d"
 cups_tmp_location: "/tmp/cups-ansible"
 cups_admin_grp: lpadmin
@@ -76,8 +73,19 @@ cups_etc_files_perms_owner: "root"
 cups_etc_files_perms_grp: "lp"
 cups_etc_files_mode: 0644
 
-cups_expect_pkgs:
+apt_cups_pre_install_packages:
   - "expect"
   - "python-pexpect"
+
+apt_cups_packages_to_install:
+  - cups
+  - cups-pdf
+
+yum_cups_pre_install_packages:
+
+yum_cups_packages_to_install:
+  - cups
+  - cups-pdf
+
 cups_ppd_shared_location: "/opt/share/ppd"
 cups_ricoh_ppd_location: "/opt/OpenPrinting-Ricoh/ppds/Ricoh"
