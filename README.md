@@ -39,6 +39,8 @@
     - xenial
     - trusty
     - precise
+* Guest machine: Redhat/CentOS
+    - 7.X
 
 ## Possible additional tasks that are not part of this role's responsibilities.
 * Opening the necessary CUPS ports - 515(LPR), 631(IPP/IPPS), 9100(direct IP) through the firewall.

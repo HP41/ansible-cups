@@ -10,9 +10,12 @@
       # can be uninstalled after the precessing of this script.
     - name: Uninstall the expect pacakges if installed before
       apt: name={{ item.0 }} state=absent
-      when: (item.1|failed) or (item.1.stdout == "")
+      when: 
+        - ((item.1|failed) or (item.1.stdout == ""))
+        - (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
       with_together:
-        - "{{cups_expect_pkgs}}"
-        - "{{cups_expect_pkgs_already_installed.results}}"
-  
+        - "{{apt_cups_expect_pkgs}}"
+        - "{{apt_cups_expect_pkgs_already_installed.results}}"
+      
   ignore_errors: True
+...
