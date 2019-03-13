@@ -19,7 +19,8 @@
     enabled: "{{item.enabled|default(cups_printer_default_enabled)}}"
     uri: "{{cups_printer_uri_prefix}}{{item.uri}}"
     default: "{{item.default_printer|default(omit)}}"
-    model: "{{item.driver|default(omit)}}"
+    driver: "{{item.driver|default(omit)}}"
+    model: "{{item.model|default(omit)}}"
     location: "{{item.location|default(omit)}}"
     info: "{{item.info|default(omit)}}"
     report_ipp_supply_levels: "{{item.report_ipp_supply_levels|default(cups_printer_default_report_ipp_supplies)}}"
@@ -44,3 +45,4 @@
     class_members: "{{item.members}}"
   with_items:
     - "{{cups_class_list}}"
+...
