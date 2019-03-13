@@ -10,3 +10,4 @@
 
 - name: Installing HP Plugin using an except script to avoid user interaction
   command: "{{cups_tmp_location}}/hp-plugin-install.exp"
+...
