@@ -9,13 +9,15 @@ matrix:
     - os: linux
       sudo: required
       dist: trusty
+    - OS_TYPE=centos
 
 env:
   - SITE=test-simple-playbook.yml
 
 before_install:
-  - sudo apt-get -y -qq update
-  - sudo apt-get -y -qq install aptitude
+  - if [[ "$TRAVIS_OS_NAME" == "trusty" ]]; sudo apt-get -y -qq update
+  - if [[ "$TRAVIS_OS_NAME" == "trusty" ]]; sudo apt-get -y -qq install aptitude
+  - if [[ "$TRAVIS_OS_NAME" == "centos" ]]; sudo yum update -y
 
 install:
   # Install Ansible.
