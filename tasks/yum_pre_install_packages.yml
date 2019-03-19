@@ -1,0 +1,6 @@
+---
+- name: Installs CUPS
+  yum:
+    name: "{{ query('flattened', '{{ yum_cups_pre_install_packages }}') }}"
+    state: installed
+...

@@ -6,3 +6,4 @@
   shell: find . -name '*.gz' -exec gzip --decompress --quiet {} \;
   args:
     chdir: "{{cups_ricoh_ppd_location}}"
+...
