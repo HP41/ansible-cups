@@ -12,11 +12,13 @@ cups_snmp_conf_template: ""
 
 cups_hplip: True
 cups_ricoh_openprinting_ppds: True
-cups_openprinting_apt_required: "{{cups_ricoh_openprinting_ppds}}"
+cups_openprinting_required: "{{cups_ricoh_openprinting_ppds}}"
 
 cups_openprinting_apt_key_id: 24CBF5474CFD1E2F
 cups_openprinting_key_server: keyserver.ubuntu.com
-cups_openprinting_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+cups_openprinting_apt_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+
+cups_openprinting_rpm_repo: "http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
 
 cups_ppd_files_to_be_copied: ""
 
@@ -76,8 +78,5 @@ cups_etc_files_perms_owner: "root"
 cups_etc_files_perms_grp: "lp"
 cups_etc_files_mode: 0644
 
-cups_expect_pkgs:
-  - "expect"
-  - "python-pexpect"
 cups_ppd_shared_location: "/opt/share/ppd"
 cups_ricoh_ppd_location: "/opt/OpenPrinting-Ricoh/ppds/Ricoh"
