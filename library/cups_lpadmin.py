@@ -363,6 +363,8 @@ class CUPSCommand(object):
 
         self.cups_current_options = {}
         self.cups_expected_options = {}
+        self.cups_current_default = "" 
+        self.cups_expected_default = ""
         self.class_current_members = []
         self.printer_current_options = {}
 
@@ -762,6 +764,45 @@ class CUPSCommand(object):
                                         .format(self.name),
                                         only_log_on_error=True)
 
+    def cups_item_get_current_default(self):
+        """
+        Return current default printer.
+        """
+        cmd = ['lpstat', '-d']
+        (rc, out, err) = self.process_info_command(cmd)
+
+        if rc != 0:
+            self.module.fail_json(
+                msg="Error occured while trying to discern printer '{0}' default.".format(self.name))
+
+        default = ""
+        # In the case of "no system default destination", return
+        if "no system default destination" in out:
+            return default
+
+        # Skip the first part as it's a description, ends with a ':'
+        (info, out) = out.split(':', 1)
+        default = str.strip(out)
+
+        self.cups_current_default = default
+
+        return default
+
+    def printer_check_default(self):
+        """
+        It checks to see if printer is the default.
+        """
+        expected_cups_default = self.name if self.default else False
+
+        self.cups_expected_default = expected_cups_default
+
+        cups_default = self.cups_item_get_current_default()
+
+        if expected_cups_default and expected_cups_default != cups_default:
+            return False
+
+        return True
+
     def cups_item_uninstall_self(self):
         """
         Uninstalls the printer or class defined in this class.
@@ -1040,6 +1081,9 @@ class CUPSCommand(object):
         if self.exists_self() and not self.printer_check_cups_options():
             self.cups_item_uninstall_self()
 
+        if self.exists_self() and not self.printer_check_default():
+            self.cups_item_uninstall_self()
+
         if not self.exists_self():
             self._printer_install()
 
@@ -1125,6 +1169,10 @@ class CUPSCommand(object):
             result['cups_current_options'] = self.cups_current_options
         if self.cups_expected_options:
             result['cups_expected_options'] = self.cups_expected_options
+        if self.cups_current_default:
+            result['cups_current_default'] = self.cups_current_default
+        if self.cups_expected_default:
+            result['cups_expected_default'] = self.cups_expected_default
         if self.class_current_members:
             result['class_current_members'] = self.class_current_members
         if self.printer_current_options:
