@@ -10,3 +10,5 @@
 
 - name: Installing HP Plugin using an Expect script to avoid user interaction
   command: "{{cups_tmp_location}}/hp-plugin-install.exp"
+  args:
+    creates: '/usr/share/hplip/prnt/plugins/hbpl1.so'
