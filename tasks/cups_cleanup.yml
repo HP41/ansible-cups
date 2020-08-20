@@ -1,5 +1,5 @@
-- block: 
-    - name: Delete {{ cups_tmp_location }}
+- block:
+    - name: Delete temporary files at {{ cups_tmp_location }}
       file:
         path: "{{cups_tmp_location}}"
         state: absent
@@ -15,4 +15,4 @@
         - "{{cups_expect_pkgs}}"
         - "{{cups_expect_pkgs_already_installed.results}}"
   
-  ignore_errors: True
+  ignore_errors: true

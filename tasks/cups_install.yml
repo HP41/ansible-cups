@@ -1,16 +1,18 @@
 ---
 - name: Install CUPS
-  apt: name={{ item }} state=latest
+  apt:
+    name: "{{ item }}"
+    state: present
   with_items:
-    - "{{cups_packages_to_install}}"
+    - "{{ cups_packages_to_install }}"
 
 - name: Add accounts to lpadmin group (CUPS admin)
   user:
-    name: "{{item}}"
+    name: "{{ item }}"
     append: yes
-    groups: "{{cups_admin_grp}}"
-  with_items: 
-    - "{{cups_lpadmin_users}}"
+    groups: "{{ cups_admin_grp }}"
+  with_items:
+    - "{{ cups_lpadmin_users }}"
 
 - name: Include - CUPS-LPD
   include: cups_install_lpd.yml
