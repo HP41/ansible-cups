@@ -14,10 +14,15 @@ cups_hplip: false
 cups_ricoh_openprinting_ppds: false
 cups_openprinting_apt_required: "{{ cups_ricoh_openprinting_ppds }}"
 
+# Debian Keys
 cups_openprinting_apt_key_id: 24CBF5474CFD1E2F
 cups_openprinting_key_server: keyserver.ubuntu.com
+# Debian:
 cups_openprinting_apt_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+# CentOS et al.
 cups_openprinting_yum_repo: "http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
+# Suse et al.
+cups_openprinting_rpm_repo: "http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
 
 cups_ppd_files_to_be_copied: ""
 
