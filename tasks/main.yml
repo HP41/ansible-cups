@@ -1,7 +1,21 @@
 ---
+
 - block:
+    - name: include Debian / Ubuntu vars
+      include_vars: debian.yml
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: include Red Hat / CentOS vars
+      include_vars: redhat.yml
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
     - name: Include - Pre-Install steps
-      include: cups_pre_install.yml
+      include: cups_pre_install_debian.yml
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Include - Pre-Install steps
+      include: cups_pre_install_redhat.yml
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
     - name: Include - Install CUPS
       include: cups_install.yml

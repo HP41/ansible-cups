@@ -18,6 +18,5 @@
         dest: "{{ cups_xinetd_location }}/cups-lpd"
         owner: root
         group: root
-        mode: 0755
+        mode: 0644
 
-  when: cups_xinetd_enabled

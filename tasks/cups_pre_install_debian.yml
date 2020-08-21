@@ -22,18 +22,10 @@
         repo: "{{ cups_openprinting_repo }}"
         state: present
         update_cache: yes
-  when: cups_openprinting_apt_required is defined and cups_openprinting_apt_required|bool
-
-# If the output is none or the command failed to find "install ok installed" then it means the package wasn't installed beforehand
-- name: Check and register if expect related packages are already installed.
-  command: "dpkg -s {{ item }} | grep 'install ok installed'"
-  register: cups_expect_pkgs_already_installed
-  with_items:
-    - "{{ cups_expect_pkgs }}"
-  changed_when: false
-  failed_when: false
+  when: cups_openprinting_apt_required is defined and cups_openprinting_apt_required
 
 - name: Ensure expect related packages are installed to guide us through CUPS installation.
   package:
     name: "{{ cups_expect_pkgs }}"
     state: present
+  register: cups_expect_install
