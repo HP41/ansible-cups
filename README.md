@@ -51,7 +51,7 @@
 * `cups_sysadmins_email`: The email that'll be used to build the cupsd.conf template - Default=`sysadmins@ansible_fqdn`
 * `cups__debops_ferm_dependent_rules`: Default simple rules to open up ports (515, 631, 9100) through firewall that can be referenced when using [debops.ferm](https://github.com/debops/ansible-ferm) role.
 * /etc/xinetd.d/cups-lpd    
-    * `cups_lpd_usn`: The username with which it'll run the cups-lpd process (through xinetd) - Default=`cupslpd`
+    * `cups_lpd_user`: The username with which it'll run the cups-lpd process (through xinetd) - Default=`cupslpd`
 * Optional templates:
     * They could've been setup as a simple file copy but accessing and adding ansible variables into it will not be possible. With this ansible\_managed, ansible\_fqdn, etc are accessible. The templates could also be simple text files with no variable declaration and it'll get copied over.
     * `cups_cupsd_conf_template`: For /etc/cups/cupsd.conf
@@ -83,11 +83,11 @@
 * `cups_packages_to_install`: The CUPS packages to install. This can be overridden for a specific package version if needed - Default=`cups, cups-pdf`
 * `cups_xinetd_location`: The location of xinet.d files - Default=`/etc/xinetd.d`
 * `cups_tmp_location`: Temp location that this role uses for copying files and running scripts. Location is created if it doesn't exist - Default=`/tmp/cups-ansible`
-* `cups_admin_grp`: The group that has admin access to CUPS. This is referenced when adding users (if defined) to CUPS admin roles - Default=`lpadmin`
+* `cups_admin_group`: The group that has admin access to CUPS. This is referenced when adding users (if defined) to CUPS admin roles - Default=`lpadmin`
 * `cups_services`: The CUPS service(s) that is referenced when starting and stopping CUPS service(s) for configuration purposes - Default=`cups`
 * `cups_etc_location`: etc location of CUPS config - Default=`/etc/cups`
 * `cups_etc_files_perms_owner`: Owner of files placed by this role under `cups_etc_location` - Default=`root`
-* `cups_etc_files_perms_grp`: Group membership of files placed by this role under `cups_etc_location` - Default=`lp`
+* `cups_etc_files_perms_group`: Group membership of files placed by this role under `cups_etc_location` - Default=`lp`
 * `cups_etc_files_mode`: File mode of files placed by this role under `cups_etc_location` - Default=`0644`
 * `cups_expect_pkgs`: The expect related packages that are installed for unattended installations of different expect scripts within this role - Default=`expect, python-pexpect`
 * `cups_ppd_shared_location`: The standard shared location where PPDs can be placed and CUPS will pick them up - Default=`/opt/share/ppd`

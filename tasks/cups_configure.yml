@@ -4,7 +4,7 @@
     src: "{{ cups_cupsd_conf_template }}"
     dest: "{{ cups_etc_location }}/cupsd.conf"
     owner: "{{ cups_etc_files_perms_owner }}"
-    group: "{{ cups_etc_files_perms_grp }}"
+    group: "{{ cups_etc_files_perms_group }}"
     mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_cupsd_conf_template|default("")
@@ -14,7 +14,7 @@
     src: "{{ cups_cups_browsed_conf_template }}"
     dest: "{{ cups_etc_location }}/cups-browsed.conf"
     owner: "{{ cups_etc_files_perms_owner }}"
-    group: "{{ cups_etc_files_perms_grp }}"
+    group: "{{ cups_etc_files_perms_group }}"
     mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_cups_browsed_conf_template|default("")
@@ -24,7 +24,7 @@
     src: "{{ cups_snmp_conf_template }}"
     dest: "{{ cups_etc_location }}/snmp.conf"
     owner: "{{ cups_etc_files_perms_owner }}"
-    group: "{{ cups_etc_files_perms_grp }}"
+    group: "{{ cups_etc_files_perms_group }}"
     mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_snmp_conf_template|default("")
@@ -35,7 +35,7 @@
   when: (cups_source_ssl_private_key_location|default("")) and (cups_source_ssl_public_key_location|default(""))
 
 - name: restart cups service(s)
-  service: 
+  service:
     name: "{{ item }}"
     state: restarted
     enabled: yes

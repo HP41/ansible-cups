@@ -3,19 +3,21 @@ galaxy_info:
   author: Hitesh Prabhakar
   description: Installs CUPS, installs necessary PPDs and installs printers and classes on CUPS
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: 2.9
   platforms:
     - name: Debian
       versions:
+        - buster
         - stretch
         - jessie
         - wheezy
     - name: Ubuntu
       versions:
+        - focal
+        - bionic
         - xenial
         - trusty
-        - precise
-  
+
   galaxy_tags:
     - cups
     - printing

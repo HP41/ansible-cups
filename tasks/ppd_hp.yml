@@ -1,6 +1,6 @@
 ---
 - name: Install HPLIP
-  apt:
+  package:
     name: hplip
     state: present
 

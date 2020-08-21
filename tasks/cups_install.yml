@@ -1,6 +1,6 @@
 ---
 - name: Install CUPS
-  apt:
+  package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -10,7 +10,7 @@
   user:
     name: "{{ item }}"
     append: yes
-    groups: "{{ cups_admin_grp }}"
+    groups: "{{ cups_admin_group }}"
   with_items:
     - "{{ cups_lpadmin_users }}"
 

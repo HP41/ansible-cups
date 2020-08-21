@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: 0600
-    remote_src: True
+    remote_src: true
 
 - name: Copying the private key
   copy:
@@ -15,4 +15,4 @@
     owner: root
     group: root
     mode: 0600
-    remote_src: True
+    remote_src: true
