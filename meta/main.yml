@@ -17,6 +17,12 @@ galaxy_info:
         - bionic
         - xenial
         - trusty
+    - name: CentOS
+      versions:
+        - all
+    - name: SLES
+      versions:
+        - all
 
   galaxy_tags:
     - cups
