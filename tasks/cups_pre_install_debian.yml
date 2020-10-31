@@ -15,7 +15,7 @@
     - name: Add OpenPrinting APT Key
       apt_key:
         id: "{{ cups_openprinting_apt_key_id }}"
-        keyserver: "{{cups_openprinting_key_server }}"
+        keyserver: "{{ cups_openprinting_key_server }}"
 
     - name: Add OpenPrinting Package repo
       apt_repository:

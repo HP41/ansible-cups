@@ -4,16 +4,16 @@
     name: "{{ cups_packages_to_install }}"
     state: present
 
-- name: ensure lpadmin group exists 
+- name: Ensure lpadmin group exists 
   group:
-    name: "{{cups_admin_group}}"
+    name: "{{ cups_admin_group }}"
     state: present
 
-- name: ensure lpadmin permissions
+- name: Ensure lpadmin permissions
   lineinfile:
-    path: "{{item}}"
+    path: "{{ item }}"
     regexp: "^SystemGroup"
-    line: "SystemGroup {{cups_admin_grp}}"
+    line: "SystemGroup {{ cups_admin_grp }}"
   with_items:
     - "/etc/cups/cupsd.conf"
     - "/etc/cups/cups-files.conf"

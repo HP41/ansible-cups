@@ -1,3 +1,4 @@
+---
 - block:
     - name: Delete temporary files at {{ cups_tmp_location }}
       file:
@@ -11,9 +12,9 @@
       # can be uninstalled after the precessing of this script.
     - name: Uninstall the expect pacakges if installed before
       package: 
-        name: "{{item}}" 
+        name: "{{ item }}" 
         state: absent
       when: cups_expect_install.changed
-      with_items: "{{cups_expect_packages}}"
-
+      with_items: "{{ cups_expect_packages }}"
   ignore_errors: true
+
