@@ -1,29 +1,28 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""
-(c) 2015, David Symons (Multimac) <Mult1m4c@gmail.com>
-(c) 2016, Konstantin Shalygin <k0ste@k0ste.ru>
-(c) 2016, Hitesh Prabhakar <HP41@GitHub>
+# (c) 2015, David Symons (Multimac) <Mult1m4c@gmail.com>
+# (c) 2016, Hitesh Prabhakar <HP41@GitHubm>
+# (c) 2016-2017, Konstantin Shalygin <k0ste@k0ste.ru>
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>
 
-This file is part of Ansible
-
-This module is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This software is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this software.  If not, see <http://www.gnu.org/licenses/>.
-"""
-
-
-# ===========================================
+ANSIBLE_METADATA = {'status': ['stableinterface'],
+                    'supported_by': 'community',
+                    'version': '1.0'}
 
 
 DOCUMENTATION = '''
@@ -44,178 +43,175 @@ requirements:
     - CUPS 1.7+
 options:
     name:
-        description:
-            - Name of the printer in CUPS.
         required: false
         default: null
-    purge:
         description:
-            - Task to purge all printers in CUPS. Convenient before deploy.
+            - Name of the printer in CUPS.
+    purge:
         required: false
         default: false
         choices: ["true", "false"]
-    state:
         description:
-            - Whether the printer should or not be in CUPS.
+            - Task to purge all printers in CUPS. Convenient before deploy.
+    state:
         required: false
         default: present
         choices: ["present", "absent"]
-    printer_or_class:
         description:
-            - State whether the object/item we are working on is a printer or class.
+            - Whether the printer should or not be in CUPS.
+    printer_or_class:
         required: false
         default: printer
         choices: ["printer", "class"]
-    driver:
         description:
-            - System V interface or PPD file.
+            - State whether the object/item we are working on is a printer or class.
+    driver:
         required: false
         default: model
         choices: ["model", "ppd"]
-    uri:
         description:
-            - The URI to use when connecting to the printer. This is only required in the present state.
+            - System V interface or PPD file.
+    uri:
         required: false
         default: null
-    enabled:
         description:
-            - Whether or not the printer should be enabled and accepting jobs.
+            - The URI to use when connecting to the printer. This is only required in the present state.
+    enabled:
         required: false
         default: true
         choices: ["true", "false"]
+        description:
+            - Whether or not the printer should be enabled and accepting jobs.
     shared:
+        required: false
+        default: false
+        choices: ["true", "false"]
         description:
             - Whether or not the printer should be shared on the network.
-        required: false
-        default: false
-        choices: ["true", "false"]
     model:
+        required: false
+        default: null
         description:
             - The System V interface or PPD file to be used for the printer.
-        required: false
-        default: null
     default:
-        description:
-          - Set default server printer. Only one printer can be default.
         required: false
         default: false
         choices: ["true", "false"]
+        description:
+          - Set default server printer. Only one printer can be default.
     info:
+        required: false
+        default: null
         description:
             - The textual description of the printer.
+    location:
         required: false
         default: null
-    location:
         description:
             - The textual location of the printer.
+    assign_cups_policy:
         required: false
         default: null
-    assign_cups_policy:
         description:
             - Assign a policy defined in /etc/cups/cupsd.conf to this printer.
-        required: false
-        default: null
     class_members:
-        description:
-            - A list of printers to be added to this class.
         required: false
         default: []
         type: list
+        description:
+            - A list of printers to be added to this class.
     report_ipp_supply_levels:
+        required: false
+        default: true
+        choices: ["true", "false"]
         description:
             - Whether or not the printer must report supply status via IPP.
+    report_snmp_supply_levels:
         required: false
         default: true
         choices: ["true", "false"]
-    report_snmp_supply_levels:
         description:
             - Whether or not the printer must report supply status via SNMP (RFC 3805).
-        required: false
-        default: true
-        choices: ["true", "false"]
     job_kb_limit:
+        required: false
+        default: null
         description:
             - Limit jobs to this printer (in KB)
+    job_quota_limit:
         required: false
         default: null
-    job_quota_limit:
         description:
             - Sets the accounting period for per-user quotas. The value is an integer number of seconds.
+    job_page_limit:
         required: false
         default: null
-    job_page_limit:
         description:
             - Sets the page limit for per-user quotas. The value is the integer number of pages that can be printed.
             - Double sided pages are counted as 2.
-        required: false
-        default: null
     options:
-        description:
-            - A dictionary of key-value pairs describing printer options and their required value.
         default: {}
         required: false
+        description:
+            - A dictionary of key-value pairs describing printer options and their required value.
 '''
 
-# ===========================================
 
-
-EXAMPLES = '''
+EXAMPLES = r'''
 # Creates HP MFP via ethernet, set default A4 paper size and make this printer
-  as server default.
+# as server default.
 - cups_lpadmin:
-    name: 'HP_M1536'
-    state: 'present'
-    printer_or_class: 'printer'
-    uri: 'hp:/net/HP_LaserJet_M1536dnf_MFP?ip=192.168.1.2'
-    model: 'drv:///hp/hpcups.drv/hp-laserjet_m1539dnf_mfp-pcl3.ppd'
-    default: 'true'
-    location: 'Room 404'
-    info: 'MFP, but duplex broken, as usual on this model'
-    printer_assign_policy: 'students'
-    report_ipp_supply_levels: 'true'
-    report_snmp_supply_levels: 'false'
+    name: "HP_M1536"
+    state: "present"
+    printer_or_class: "printer"
+    uri: "hp:/net/HP_LaserJet_M1536dnf_MFP?ip=192.168.1.2"
+    model: "drv:///hp/hpcups.drv/hp-laserjet_m1539dnf_mfp-pcl3.ppd"
+    default: "true"
+    location: "Room 404"
+    info: "MFP, but duplex broken, as usual on this model"
+    printer_assign_policy: "students"
+    report_ipp_supply_levels: "true"
+    report_snmp_supply_levels: "false"
     options:
-      media: 'iso_a4_210x297mm'
+      media: "iso_a4_210x297mm"
 
 # Creates HP Printer via IPP (shared USB printer in another CUPS instance).
-  Very important include 'snmp=false' to prevent adopt 'parent' driver,
-  because if 'parent' receive not raw job this job have fail (filter failed).
+# Very important disable snmp to prevent adopt 'parent' driver, because if
+# 'parent' receive not raw job this job have fail (filter failed).
 - cups_lpadmin:
-    name: 'HP_P2055'
-    state: 'present'
-    uri: 'ipp://192.168.2.127:631/printers/HP_P2055?snmp=false'
-    model: 'raw'
+    name: "HP_P2055"
+    state: "present"
+    uri: "ipp://192.168.2.127:631/printers/HP_P2055?snmp=false"
+    model: "raw"
     options:
-      media: 'iso_a4_210x297mm'
+      media: "iso_a4_210x297mm"
 
 # Create CUPS Class.
 - cups_lpadmin:
-    name: 'StudentClass'
-    state: 'present'
-    printer_or_class: 'class'
+    name: "StudentClass"
+    state: "present"
+    printer_or_class: "class"
     class_members:
         - CampusPrinter1
         - CampusPrinter2
-    info: 'Printers for students'
-    location: 'Room 404'
+    info: "Printers for students"
+    location: "Room 404"
 
 # Deletes the printers/classes.
 - cups_lpadmin:
-    name: 'HP_P2055'
-    state: 'absent'
-    printer_or_class: 'printer'
+    name: "HP_P2055"
+    state: "absent"
+    printer_or_class: "printer"
 - cups_lpadmin:
-    name: 'StudentClass'
-    state: 'absent'
-    printer_or_class: 'class'
+    name: "StudentClass"
+    state: "absent"
+    printer_or_class: "class"
 
 # Purge all printers/classes. Useful when does not matter what we have now,
   client always receive new configuration.
+
 - cups_lpadmin: purge='true'
+
 '''
-
-# ===========================================
-
 
 RETURN = '''
 purge:
@@ -267,11 +263,14 @@ cmd_history:
     description: A concatenated string of all the commands run.
     returned: always
     type: string
-    sample: "\nlpstat -p TEST \nlpinfo -l -m \nlpoptions -p TEST \nlpstat -p TEST \nlpstat -p TEST \nlpadmin -p TEST -o cupsIPPSupplies=true -o cupsSNMPSupplies=true \nlpoptions -p TEST -l "
+    sample: "lpstat -p TEST
+             lpinfo -l -m
+             lpoptions -p TEST
+             lpstat -p TEST
+             lpstat -p TEST
+             lpadmin -p TEST -o cupsIPPSupplies=true -o cupsSNMPSupplies=true
+             lpoptions -p TEST -l"
 '''
-
-
-# ===========================================
 
 
 class CUPSCommand(object):
@@ -379,7 +378,10 @@ class CUPSCommand(object):
         """
         msgs = []
 
-        if self.state == 'printer':
+        if self.purge:
+            return
+
+        if self.state == 'present':
             if not self.printer_or_class:
                 msgs.append("When state=present printer or class must be defined.")
 
@@ -537,7 +539,7 @@ class CUPSCommand(object):
                 kv = l.split('=', 1)
 
                 # Strip out any excess whitespace from the key/value
-                kv = tuple(map(str.strip, kv))
+                kv = map(str.strip, kv)
 
                 curr[kv[0]] = kv[1]
 
@@ -680,7 +682,7 @@ class CUPSCommand(object):
         """
         cmd = ['lpadmin', '-p', self.name]
 
-        for k, v in self.options.iteritems():
+        for k, v in self.options.items():
             cmd.extend(['-o', '{0}={1}'.format(k, v)])
 
         if self.default:
@@ -1131,9 +1133,6 @@ class CUPSCommand(object):
             result['printer_current_options'] = self.printer_current_options
 
         return result
-
-
-# ===========================================
 
 
 def main():

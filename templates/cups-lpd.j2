@@ -7,8 +7,8 @@ service printer
 	protocol = tcp
 	port = 515
 	wait = no
-	user = {{ cups_lpd_usn }}
-	group = {{ cups_admin_grp }}
+	user = {{ cups_lpd_user }}
+	group = {{ cups_admin_group }}
 	server = /usr/lib/cups/daemon/cups-lpd
 	server_args = -o document-format=application/octet-stream
 	disable = no

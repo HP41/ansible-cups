@@ -1,17 +1,21 @@
 ---
 - name: Install xinetd for cups-lpd
-  apt: name=xinetd state=latest
+  block:
+    - name: Install xinetd for cups-lpd
+      package:
+        name: xinetd
+        state: present
 
-- name: Create cups-lpd user - {{ cups_lpd_usn }}
-  user:
-    name: "{{cups_lpd_usn}}"
-    append: yes
-    groups: "{{cups_admin_grp}}"
+    - name: Create cups-lpd user - {{ cups_lpd_user }}
+      user:
+        name: "{{ cups_lpd_user }}"
+        append: yes
+        groups: "{{ cups_admin_group }}"
 
-- name: Copying over cups-lpd using cups-lpd.j2 template
-  template:
-    src: "cups-lpd.j2"
-    dest: "{{cups_xinetd_location}}/cups-lpd"
-    owner: root
-    group: root
-    mode: 0755
+    - name: Copying over cups-lpd using cups-lpd.j2 template
+      template:
+        src: "cups-lpd.j2"
+        dest: "{{ cups_xinetd_location }}/cups-lpd"
+        owner: root
+        group: root
+        mode: 0644

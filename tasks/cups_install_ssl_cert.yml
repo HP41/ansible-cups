@@ -1,18 +1,18 @@
 ---
 - name: Copying the public key over to final destination
   copy:
-    src: "{{cups_source_ssl_public_key_location}}"
-    dest: "{{cups_etc_location}}/ssl/{{ansible_fqdn}}.crt"
+    src: "{{ cups_source_ssl_public_key_location }}"
+    dest: "{{ cups_etc_location }}/ssl/{{ ansible_fqdn }}.crt"
     owner: root
     group: root
     mode: 0600
-    remote_src: True
+    remote_src: true
 
 - name: Copying the private key
   copy:
-    src: "{{cups_source_ssl_private_key_location}}"
-    dest: "{{cups_etc_location}}/ssl/{{ansible_fqdn}}.key"
+    src: "{{ cups_source_ssl_private_key_location }}"
+    dest: "{{ cups_etc_location }}/ssl/{{ ansible_fqdn }}.key"
     owner: root
     group: root
     mode: 0600
-    remote_src: True
+    remote_src: true
