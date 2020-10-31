@@ -17,9 +17,10 @@ galaxy_info:
         - bionic
         - xenial
         - trusty
-    - name: CentOS
+    - name: EL
       versions:
-        - all
+        - 6
+        - 7
     - name: SLES
       versions:
         - all

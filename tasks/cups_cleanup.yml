@@ -17,4 +17,3 @@
       when: cups_expect_install.changed
       with_items: "{{ cups_expect_packages }}"
   ignore_errors: true
-
