@@ -14,15 +14,15 @@
 - block:
     - name: install lsb
       yum:
-	name: lsb
-	state: present
+        name: lsb
+        state: present
 
     - name: Add Openprinting Repo
       yum_repository:
-	name: openprinting
-	description: OpenPrinting LSB-based driver packages
-	baseurl: "{{ cups_openprinting_rpm_repo }}"
-	gpgcheck: no
+        name: openprinting
+        description: OpenPrinting LSB-based driver packages
+        baseurl: "{{ cups_openprinting_rpm_repo }}"
+        gpgcheck: no
   when: cups_openprinting_required is defined and cups_openprinting_required
 
 - name: Ensure expect related packages are installed to guide us through CUPS installation.
