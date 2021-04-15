@@ -10,7 +10,7 @@
       # can be uninstalled after the processing of this script.
     - name: Uninstall the expect pacakges if installed before
       apt: name={{ item.0 }} state=absent
-      when: (item.1|failed) or (item.1.stdout == "")
+      when: item.1 is failed or (item.1.stdout == "")
       with_together:
         - "{{cups_expect_pkgs}}"
         - "{{cups_expect_pkgs_already_installed.results}}"
