@@ -8,5 +8,5 @@
     dest: "{{cups_tmp_location}}/hp-plugin-install.exp"
     mode: a+rx
 
-- name: Installing HP Plugin using an except script to avoid user interaction
+- name: Installing HP Plugin using an expect script to avoid user interaction
   command: "{{cups_tmp_location}}/hp-plugin-install.exp"

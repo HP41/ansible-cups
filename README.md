@@ -9,8 +9,8 @@
 * Installs `cups-lpd` if variables allow (see below):
     * Creates a user account which will run the cups-lpd process.
     * Installs `xinetd` to run cups-lpd as a service. Uses the cups-lpd template file to create the final xinetd config.
-* Configuring CUPS: 
-    * If templates for cupsd.conf, cups-browsed.conf and snmp.conf are provided they'll be built and copied over 
+* Configuring CUPS:
+    * If templates for cupsd.conf, cups-browsed.conf and snmp.conf are provided they'll be built and copied over
     * If SSL certs are provided it'll copy them over to the proper location.
 
 ### Install PPDs
@@ -19,7 +19,7 @@
 * Install Ricoh OpenPrinting Package - `openprinting-ppds-postscript-ricoh`
     * Also unzip the PPDs it installs as the package installs them as gzip files in `/opt/OpenPrinting-Ricoh/ppds/Ricoh`
 * Installs HPLIP:
-    * Also installs the HP proprietary plugin using an except script.
+    * Also installs the HP proprietary plugin using an expect script.
 * Copies over PPDs from the folder if specified in  `cups_ppd_files_to_be_copied` to `/opt/share/ppd`
 
 ### Install Printers
@@ -27,9 +27,9 @@
 * Install Printers listed in the `cups_printer_list` variable and then installs classes listed in the `cups_class_list`
     * See [cups_printer_list and cups_class_list](tasks/printer_install.yml) to see how to define each printer and class object in the variable `cups_printer_list` and `cups_class_list` respectively.
     * This uses the [cups_lpadmin](library/cups_lpadmin.py) module. There's documentation/comments within it on how it can be used.
-    * cups\_lpadmin is a direct copy from [HP41.ansible-modules-extra](https://github.com/HP41/ansible-modules-extras)/system/cups\_lpadmin. Once it's merged upstream, it'll be removed from here. 
-    
-## Requirements 
+    * cups\_lpadmin is a direct copy from [HP41.ansible-modules-extra](https://github.com/HP41/ansible-modules-extras)/system/cups\_lpadmin. Once it's merged upstream, it'll be removed from here.
+
+## Requirements
 * Ansible >= 2.1
 * Guest machine: Debian
     - stretch
@@ -50,7 +50,7 @@
 * `cups_lpd`: Whether to install and setup cups-lpd - Default=`True`
 * `cups_sysadmins_email`: The email that'll be used to build the cupsd.conf template - Default=`sysadmins@ansible_fqdn`
 * `cups__debops_ferm_dependent_rules`: Default simple rules to open up ports (515, 631, 9100) through firewall that can be referenced when using [debops.ferm](https://github.com/debops/ansible-ferm) role.
-* /etc/xinetd.d/cups-lpd    
+* /etc/xinetd.d/cups-lpd
     * `cups_lpd_usn`: The username with which it'll run the cups-lpd process (through xinetd) - Default=`cupslpd`
 * Optional templates:
     * They could've been setup as a simple file copy but accessing and adding ansible variables into it will not be possible. With this ansible\_managed, ansible\_fqdn, etc are accessible. The templates could also be simple text files with no variable declaration and it'll get copied over.
