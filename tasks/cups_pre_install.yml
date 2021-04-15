@@ -31,7 +31,7 @@
 
 # If the output is none or the command failed to find "install ok installed" then it means the package wasn't installed beforehand
 - name: Check and register if expect related packages are already installed.
-  command: dpkg -s {{item}} | grep 'install ok installed'
+  shell: dpkg -s {{item}} | grep 'install ok installed'
   register: cups_expect_pkgs_already_installed
   with_items:
     - "{{cups_expect_pkgs}}"
