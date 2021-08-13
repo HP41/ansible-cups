@@ -1,0 +1,31 @@
+---
+- name: Creating CUPS tmp location {{ cups_tmp_location }}
+  file:
+    path: "{{ cups_tmp_location }}"
+    recurse: yes
+    state: directory
+
+- name: Creating {{ cups_ppd_shared_location }}
+  file:
+    path: "{{ cups_ppd_shared_location }}"
+    recurse: yes
+    state: directory
+
+- block:
+    - name: Add OpenPrinting APT Key
+      apt_key:
+        id: "{{ cups_openprinting_apt_key_id }}"
+        keyserver: "{{ cups_openprinting_key_server }}"
+
+    - name: Add OpenPrinting Package repo
+      apt_repository:
+        repo: "{{ cups_openprinting_repo }}"
+        state: present
+        update_cache: yes
+  when: cups_openprinting_apt_required is defined and cups_openprinting_apt_required
+
+- name: Ensure expect related packages are installed to guide us through CUPS installation.
+  package:
+    name: "{{ cups_expect_pkgs }}"
+    state: present
+  register: cups_expect_install

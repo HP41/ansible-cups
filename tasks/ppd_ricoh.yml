@@ -1,8 +1,11 @@
 ---
 - name: Install OpenPrinting Ricoh drivers
-  apt: name=openprinting-ppds-postscript-ricoh state=latest
+  package:
+    name: openprinting-ppds-postscript-ricoh
+    state: present
 
 - name: Extracting PPDs
   shell: find . -name '*.gz' -exec gzip --decompress --quiet {} \;
   args:
-    chdir: "{{cups_ricoh_ppd_location}}"
+    chdir: "{{ cups_ricoh_ppd_location }}"
+    creates: "{{ cups_ricoh_ppd_location }}/Ricoh-Aficio_CL5000-Postscript-Ricoh-en.ppd"

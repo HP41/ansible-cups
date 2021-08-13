@@ -1,16 +1,30 @@
 ---
 - name: Install CUPS
-  apt: name={{ item }} state=latest
+  package:
+    name: "{{ cups_packages_to_install }}"
+    state: present
+
+- name: Ensure lpadmin group exists 
+  group:
+    name: "{{ cups_admin_group }}"
+    state: present
+
+- name: Ensure lpadmin permissions
+  lineinfile:
+    path: "{{ item }}"
+    regexp: "^SystemGroup"
+    line: "SystemGroup {{ cups_admin_grp }}"
   with_items:
-    - "{{cups_packages_to_install}}"
+    - "/etc/cups/cupsd.conf"
+    - "/etc/cups/cups-files.conf"
 
 - name: Add accounts to lpadmin group (CUPS admin)
   user:
-    name: "{{item}}"
+    name: "{{ item }}"
     append: yes
-    groups: "{{cups_admin_grp}}"
-  with_items: 
-    - "{{cups_lpadmin_users}}"
+    groups: "{{ cups_admin_group }}"
+  with_items:
+    - "{{ cups_lpadmin_users }}"
 
 - name: Include - CUPS-LPD
   include: cups_install_lpd.yml

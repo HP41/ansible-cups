@@ -9,9 +9,9 @@
 
 - name: Copy PPDs in the ppds_to_be_copied folder
   copy:
-    src: "{{cups_ppd_files_to_be_copied}}/"
-    dest: "{{cups_ppd_shared_location}}/"
+    src: "{{ cups_ppd_files_to_be_copied }}/"
+    dest: "{{ cups_ppd_shared_location }}/"
     owner: root
     group: root
     mode: 0644
-  when: cups_ppd_files_to_be_copied|default("") != ""
+  when: cups_ppd_files_to_be_copied |default(false)
