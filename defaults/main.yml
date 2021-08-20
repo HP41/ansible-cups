@@ -1,22 +1,28 @@
 ---
 cups_lpadmin_users:
   - root
-cups_lpd: True
-cups_lpd_usn: cupslpd
+cups_lpd: true
+cups_lpd_user: cupslpd
 
-cups_sysadmins_email: "sysadmins@{{ansible_fqdn}}"
+cups_sysadmins_email: "sysadmins@{{ ansible_fqdn }}"
 
 cups_cupsd_conf_template: ""
 cups_cups_browsed_conf_template: ""
 cups_snmp_conf_template: ""
 
-cups_hplip: True
-cups_ricoh_openprinting_ppds: True
-cups_openprinting_apt_required: "{{cups_ricoh_openprinting_ppds}}"
+cups_hplip: false
+cups_ricoh_openprinting_ppds: false
+cups_openprinting_apt_required: "{{ cups_ricoh_openprinting_ppds }}"
 
+# Debian Keys
 cups_openprinting_apt_key_id: 24CBF5474CFD1E2F
 cups_openprinting_key_server: keyserver.ubuntu.com
-cups_openprinting_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+# Debian:
+cups_openprinting_apt_repo: "deb http://www.openprinting.org/download/printdriver/debian/ lsb3.2 main"
+# CentOS et al.
+cups_openprinting_yum_repo: "http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
+# Suse et al.
+cups_openprinting_rpm_repo: "http://www.openprinting.org/download/printdriver/components/lsb3.2/main/RPMS"
 
 cups_ppd_files_to_be_copied: ""
 
@@ -26,21 +32,21 @@ cups__debops_ferm_dependent_rules:
     type: 'accept'
     protocol: 'tcp'
     dport: ['631', '515', '9100']
-    accept_any: True
+    accept_any: true
 
-cups_purge_all_printers_and_classes: False
+cups_purge_all_printers_and_classes: false
 
 cups_printer_uri_prefix: ""
 
 cups_printer_default_state: "present"
-cups_printer_default_report_ipp_supplies: True
-cups_printer_default_report_snmp_supplies: True
-cups_printer_default_is_shared: True
-cups_printer_default_enabled: True
+cups_printer_default_report_ipp_supplies: true
+cups_printer_default_report_snmp_supplies: true
+cups_printer_default_is_shared: true
+cups_printer_default_enabled: true
 cups_printer_default_assign_cups_policy: "default"
 
 cups_class_default_state: "present"
-cups_class_default_is_shared: True
+cups_class_default_is_shared: true
 
 cups_printers_and_classes_to_be_removed: []
 #  - TEST
@@ -66,18 +72,19 @@ cups_class_list: []
 cups_packages_to_install:
   - cups
   - cups-pdf
+
+cups_xinetd_enabled: false
 cups_xinetd_location: "/etc/xinetd.d"
 cups_tmp_location: "/tmp/cups-ansible"
-cups_admin_grp: lpadmin
+cups_admin_group: lpadmin
+
 cups_services:
   - cups
+
 cups_etc_location: "/etc/cups"
 cups_etc_files_perms_owner: "root"
-cups_etc_files_perms_grp: "lp"
+cups_etc_files_perms_group: "lp"
 cups_etc_files_mode: 0644
 
-cups_expect_pkgs:
-  - "expect"
-  - "python-pexpect"
 cups_ppd_shared_location: "/opt/share/ppd"
 cups_ricoh_ppd_location: "/opt/OpenPrinting-Ricoh/ppds/Ricoh"

@@ -23,6 +23,8 @@ send -- "hp-plugin -i\r"
 expect "Do you wish to download and re-install the plug-in? (y=yes*, n=no, q=quit) ?" { send -- "y\r" }
 expect "Enter option (d=download*, p=specify path, q=quit) ?" { send -- "d\r" }
 expect "Do you accept the license terms for the plug-in (y=yes*, n=no, q=quit) ?" { send -- "y\r" }
+expect "Do you still want to install the plug-in" { send -- "n\r" }
+expect "Network connection not detected" { expect eof }
 
 # Finally exiting the shell created above.
 expect ":" { send -- "exit\r" }

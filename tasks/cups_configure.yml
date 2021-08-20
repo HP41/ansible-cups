@@ -1,45 +1,44 @@
 ---
-- name: Shutdown cups service(s)
-  service: 
-    name: "{{item}}"
-    state: stopped
-  with_items:
-    - "{{cups_services}}"
-
-- name: Copying over cupsd.conf using template if defined to {{cups_etc_location}}/cupsd.conf.
+- name: Copying over cupsd.conf using template if defined to {{ cups_etc_location }}/cupsd.conf.
   template:
-    src: "{{cups_cupsd_conf_template}}"
-    dest: "{{cups_etc_location}}/cupsd.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
-  when: cups_cupsd_conf_template|default("") != ""
+    src: "{{ cups_cupsd_conf_template }}"
+    dest: "{{ cups_etc_location }}/cupsd.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
+  register: restart_required
+  when: cups_cupsd_conf_template|default("")
 
-- name: Copying over cups-browsed.conf using template if defined to {{cups_etc_location}}/cups-browsed.conf.
+- name: Copying over cups-browsed.conf using template if defined to {{ cups_etc_location }}/cups-browsed.conf.
   template:
-    src: "{{cups_cups_browsed_conf_template}}"
-    dest: "{{cups_etc_location}}/cups-browsed.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
-  when: cups_cups_browsed_conf_template|default("") != ""
+    src: "{{ cups_cups_browsed_conf_template }}"
+    dest: "{{ cups_etc_location }}/cups-browsed.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
+  register: restart_required
+  when: cups_cups_browsed_conf_template|default("")
 
-- name: Copying over snmp.conf using template if defined to {{cups_etc_location}}/snmp.conf.
+- name: Copying over snmp.conf using template if defined to {{ cups_etc_location }}/snmp.conf.
   template:
-    src: "{{cups_snmp_conf_template}}"
-    dest: "{{cups_etc_location}}/snmp.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
-  when: cups_snmp_conf_template|default("") != ""
+    src: "{{ cups_snmp_conf_template }}"
+    dest: "{{ cups_etc_location }}/snmp.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
+  register: restart_required
+  when: cups_snmp_conf_template|default("")
 
-- name: Include - Copy SSL certificates if necessary variables are defined - cups_source_ssl_private_key_location AND cups_source_ssl_public_key_location.
+- name: Include - Copy SSL certificates if necessary variables are defined - cups_source_ssl_{public,private}_key_location
   include: cups_install_ssl_cert.yml
-  when: (cups_source_ssl_private_key_location|default("") != "") and (cups_source_ssl_public_key_location|default("") != "")
+  register: restart_required
+  when: (cups_source_ssl_private_key_location|default("")) and (cups_source_ssl_public_key_location|default(""))
 
-- name: Start back up cups service(s)
-  service: 
-    name: "{{item}}"
-    state: started
+- name: restart cups service(s)
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
   with_items:
-    - "{{cups_services}}"
+    - "{{ cups_services }}"
+  when: restart_required is defined and restart_required.changed
