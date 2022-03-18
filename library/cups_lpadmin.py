@@ -680,7 +680,7 @@ class CUPSCommand(object):
         """
         cmd = ['lpadmin', '-p', self.name]
 
-        for k, v in self.options.iteritems():
+        for k, v in self.options.items():
             cmd.extend(['-o', '{0}={1}'.format(k, v)])
 
         if self.default:
